@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/profile" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/profile"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toRightOf="@id/profile"
+        android:layout_toEndOf="@id/profile"
+        android:text="Mindy Kaling"
+        android:textColor="@color/body_text_1"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toRightOf="@id/profile"
+        android:layout_toEndOf="@id/profile"
+        android:gravity="bottom"
+        android:text="Yesterday &#8226; Public"
+        android:textAllCaps="true"
+        android:textColor="@color/body_text_disabled"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Headed out on the road for a couple weeks with these two guys."
+        android:textColor="@color/body_text_2"
+        android:textSize="@dimen/text_size_medium" />
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_margin="16dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/image" />
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/heart"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@id/description"
+        android:layout_alignStart="@id/description"
+        android:layout_below="@id/image"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="?selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/heart" />
+
+</RelativeLayout>
