@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         MyAdapter adapter = new MyAdapter(new String[]{"Hello", "World"});
         recyclerView.setAdapter(adapter);
