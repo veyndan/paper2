@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private String[] dataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private static final String TAG = LogUtils.makeLogTag(ViewHolder.class);
         final TextView name;
         final TextView about;
         final TextView description;
@@ -41,6 +44,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             profile.setColorFilter(new ColorMatrixColorFilter(matrix));
+
+            PhotoViewAttacher attacher = new PhotoViewAttacher(image);
         }
     }
 
