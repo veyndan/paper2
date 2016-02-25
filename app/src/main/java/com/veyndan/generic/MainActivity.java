@@ -8,16 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
-import uk.co.senab.photoview.gestures.GestureDetector;
-import uk.co.senab.photoview.gestures.OnGestureListener;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
@@ -58,36 +54,15 @@ public class MainActivity extends AppCompatActivity {
                 image.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 final int width = image.getMeasuredWidth();
                 final int height = image.getMeasuredHeight();
-                GestureDetector detector = new GestureDetector() {
-                    @Override
-                    public boolean onTouchEvent(MotionEvent ev) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isScaling() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isDragging() {
-                        return false;
-                    }
-
-                    @Override
-                    public void setOnGestureListener(OnGestureListener listener) {
-
-                    }
-                };
                 attacher.setOnScaleChangeListener(new PhotoViewAttacher.OnScaleChangeListener() {
                     @Override
                     public void onScaleChange(float scaleFactor, float focusX, float focusY) {
-                        if (width * scaleFactor <= metrics.widthPixels) {
-                            ViewGroup.LayoutParams params = image.getLayoutParams();
-                            params.width = (int) (width * scaleFactor);
-                            params.height = (int) (height * scaleFactor);
-                            image.setLayoutParams(params);
-                        }
+//                        if (width * scaleFactor <= metrics.widthPixels) {
+//                            ViewGroup.LayoutParams params = image.getLayoutParams();
+//                            params.width = (int) (width * scaleFactor);
+//                            params.height = (int) (height * scaleFactor);
+//                            image.setLayoutParams(params);
+//                        }
                     }
                 });
             }
