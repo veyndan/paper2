@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/profile"
+        android:layout_marginBottom="2dp"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_toRightOf="@id/profile"
@@ -52,6 +53,7 @@
         android:layout_marginRight="16dp"
         android:text="Headed out on the road for a couple weeks with these two guys."
         android:textColor="@color/body_text_2"
+        android:lineSpacingMultiplier="1.1"
         android:textSize="@dimen/text_size_medium" />
 
     <uk.co.senab.photoview.PhotoView
