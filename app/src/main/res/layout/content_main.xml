@@ -11,6 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
         android:src="@drawable/profile" />
@@ -21,7 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/profile"
         android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_toRightOf="@id/profile"
+        android:layout_toEndOf="@id/profile"
         android:text="Mindy Kaling"
         android:textColor="@color/body_text_1"
         android:textSize="@dimen/text_size_medium"
@@ -33,7 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
         android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_toRightOf="@id/profile"
+        android:layout_toEndOf="@id/profile"
         android:gravity="bottom"
         android:text="Yesterday &#8226; Public"
         android:textAllCaps="true"
@@ -61,14 +66,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/image" />
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/heart"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignLeft="@id/description"
+        android:layout_alignStart="@id/description"
         android:layout_below="@id/image"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_favorite_24dp" />
+        app:srcCompat="@drawable/heart" />
 
 </RelativeLayout>
