@@ -7,12 +7,13 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final Context context;
     private final String[] dataset;
 
@@ -22,7 +23,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         final TextView name, about;
         final TextView description;
         final ImageView profile, image;
-        final AppCompatImageButton heart, more;
+        final AppCompatImageButton heart, code, basket, more;
 
         public ViewHolder(View v, Context context) {
             super(v);
@@ -32,7 +33,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             profile = (ImageView) v.findViewById(R.id.profile);
             image = (ImageView) v.findViewById(R.id.image);
             heart = (AppCompatImageButton) v.findViewById(R.id.heart);
+            code = (AppCompatImageButton) v.findViewById(R.id.code);
+            basket = (AppCompatImageButton) v.findViewById(R.id.basket);
             more = (AppCompatImageButton) v.findViewById(R.id.more);
+
+            // Make profile picture black and white
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            profile.setColorFilter(new ColorMatrixColorFilter(matrix));
 
             heart.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -41,10 +49,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 }
             });
 
-            // Make profile picture black and white
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            profile.setColorFilter(new ColorMatrixColorFilter(matrix));
+            code.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    code.setSelected(!code.isSelected());
+                }
+            });
+
+            basket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    basket.setSelected(!basket.isSelected());
+                }
+            });
 
             // Popup menu for QAB overflow
             final PopupMenu menu = new PopupMenu(context, more);
@@ -54,19 +71,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     menu.show();
+                    menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            more.setSelected(!more.isSelected());
+                            return true;
+                        }
+                    });
                 }
             });
         }
     }
 
-    public MyAdapter(Context context, String[] dataset) {
+    public HomeAdapter(Context context, String[] dataset) {
         this.context = context;
         this.dataset = dataset;
     }
 
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public HomeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                     int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
         return new ViewHolder(v, context);

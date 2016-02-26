@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        // Returning false so overflow icon isn't drawn, return true to draw it
+        return false;
     }
 
     @Override

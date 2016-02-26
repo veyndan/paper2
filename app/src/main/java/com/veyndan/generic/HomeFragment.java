@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
-        MyAdapter adapter = new MyAdapter(getContext(), new String[]{"Hello"});
+        HomeAdapter adapter = new HomeAdapter(getContext(), new String[]{"Hello"});
         recyclerView.setAdapter(adapter);
 
         return view;

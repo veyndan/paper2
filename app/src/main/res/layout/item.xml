@@ -80,24 +80,24 @@
         app:srcCompat="@drawable/heart" />
 
     <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/action1"
+        android:id="@+id/code"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@id/image"
         android:layout_marginBottom="16dp"
         android:layout_toRightOf="@id/heart"
         android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/heart" />
+        app:srcCompat="@drawable/code" />
 
     <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/action2"
+        android:id="@+id/basket"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@id/image"
         android:layout_marginBottom="16dp"
-        android:layout_toRightOf="@id/action1"
+        android:layout_toRightOf="@id/code"
         android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/heart" />
+        app:srcCompat="@drawable/basket" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/more"
@@ -105,9 +105,9 @@
         android:layout_height="40dp"
         android:layout_below="@id/image"
         android:layout_marginBottom="16dp"
-        android:layout_toRightOf="@id/action2"
+        android:layout_toRightOf="@id/basket"
         android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_more_horiz_black_24dp" />
+        app:srcCompat="@drawable/more" />
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
