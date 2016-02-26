@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        MyAdapter adapter = new MyAdapter(new String[]{""});
+        MyAdapter adapter = new MyAdapter(this, new String[]{""});
         recyclerView.setAdapter(adapter);
     }
 

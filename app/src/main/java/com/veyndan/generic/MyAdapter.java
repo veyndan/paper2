@@ -1,8 +1,10 @@
 package com.veyndan.generic;
 
+import android.content.Context;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,28 +12,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private String[] dataset;
+    private final Context context;
+    private final String[] dataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private static final String TAG = LogUtils.makeLogTag(ViewHolder.class);
-        final TextView name;
-        final TextView about;
-        final TextView description;
-        final ImageView profile;
-        final ImageView image;
-        final AppCompatImageButton heart;
 
-        public ViewHolder(View v) {
+        final TextView name, about;
+        final TextView description;
+        final ImageView profile, image;
+        final AppCompatImageButton heart, more;
+
+        public ViewHolder(View v, Context context) {
             super(v);
             name = (TextView) v.findViewById(R.id.name);
             about = (TextView) v.findViewById(R.id.about);
             description = (TextView) v.findViewById(R.id.description);
-            heart = (AppCompatImageButton) v.findViewById(R.id.heart);
             profile = (ImageView) v.findViewById(R.id.profile);
             image = (ImageView) v.findViewById(R.id.image);
+            heart = (AppCompatImageButton) v.findViewById(R.id.heart);
+            more = (AppCompatImageButton) v.findViewById(R.id.more);
 
             heart.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -45,12 +46,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             matrix.setSaturation(0);
             profile.setColorFilter(new ColorMatrixColorFilter(matrix));
 
-            PhotoViewAttacher attacher = new PhotoViewAttacher(image);
+            // Popup menu for QAB overflow
+            final PopupMenu menu = new PopupMenu(context, more);
+            menu.getMenu().add("titleRes");
+
+            more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu.show();
+                }
+            });
         }
     }
 
-    public MyAdapter(String[] myDataset) {
-        dataset = myDataset;
+    public MyAdapter(Context context, String[] dataset) {
+        this.context = context;
+        this.dataset = dataset;
     }
 
     @Override
@@ -58,7 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                                    int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, context);
     }
 
     @Override
