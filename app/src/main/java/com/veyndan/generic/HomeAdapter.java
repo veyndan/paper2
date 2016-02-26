@@ -23,7 +23,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         final TextView name, about;
         final TextView description;
         final ImageView profile, image;
-        final AppCompatImageButton heart, code, basket, more;
+        final AppCompatImageButton heart, code, more;
 
         public ViewHolder(View v, Context context) {
             super(v);
@@ -34,7 +34,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             image = (ImageView) v.findViewById(R.id.image);
             heart = (AppCompatImageButton) v.findViewById(R.id.heart);
             code = (AppCompatImageButton) v.findViewById(R.id.code);
-            basket = (AppCompatImageButton) v.findViewById(R.id.basket);
+//            basket = (AppCompatImageButton) v.findViewById(R.id.basket);
             more = (AppCompatImageButton) v.findViewById(R.id.more);
 
             // Make profile picture black and white
@@ -53,13 +53,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     code.setSelected(!code.isSelected());
-                }
-            });
-
-            basket.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    basket.setSelected(!basket.isSelected());
                 }
             });
 
