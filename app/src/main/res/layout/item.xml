@@ -66,58 +66,33 @@
         android:scaleType="fitXY"
         android:src="@drawable/image" />
 
-    <android.support.v7.widget.AppCompatImageButton
+    <ToggleButton
         android:id="@+id/heart"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        style="@style/ImageToggle"
         android:layout_alignLeft="@id/image"
         android:layout_alignStart="@id/image"
         android:layout_below="@id/image"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/heart" />
+        android:drawableTop="@drawable/heart" />
 
-    <android.support.v7.widget.AppCompatImageButton
+    <ToggleButton
         android:id="@+id/code"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        style="@style/ImageToggle"
         android:layout_below="@id/image"
         android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@id/heart"
         android:layout_toRightOf="@id/heart"
-        android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/code" />
-
-    <!--<ToggleButton-->
-    <!--android:id="@+id/basket"-->
-    <!--android:layout_width="40dp"-->
-    <!--android:layout_height="40dp"-->
-    <!--android:layout_below="@id/image"-->
-    <!--android:layout_toEndOf="@id/code"-->
-    <!--android:layout_toRightOf="@id/code"-->
-    <!--android:background="?selectableItemBackgroundBorderless"-->
-    <!--android:drawableTop="@drawable/basket"-->
-    <!--android:padding="16dp"-->
-    <!--android:textOff=""-->
-    <!--android:textOn="" />-->
+        android:drawableTop="@drawable/code" />
 
     <ToggleButton
         android:id="@+id/basket"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        style="@style/ImageToggle"
         android:layout_below="@id/image"
-        android:paddingTop="8dp"
-        android:gravity="center"
         android:layout_toEndOf="@id/code"
         android:layout_toRightOf="@id/code"
-        android:background="?selectableItemBackgroundBorderless"
-        android:drawableTop="@drawable/basket"
-        android:text="@null"
-        android:textOff="@null"
-        android:textOn="@null"
-        android:textSize="0sp" />
+        android:drawableTop="@drawable/basket" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/more"
@@ -128,7 +103,7 @@
         android:layout_toEndOf="@id/basket"
         android:layout_toRightOf="@id/basket"
         android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/more" />
+        app:srcCompat="@drawable/ic_more_horiz_24dp" />
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"

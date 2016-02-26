@@ -7,11 +7,11 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final Context context;
@@ -23,7 +23,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         final TextView name, about;
         final TextView description;
         final ImageView profile, image;
-        final AppCompatImageButton heart, code, more;
+        final ToggleButton heart, code, basket;
+        final AppCompatImageButton more;
 
         public ViewHolder(View v, Context context) {
             super(v);
@@ -32,29 +33,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             description = (TextView) v.findViewById(R.id.description);
             profile = (ImageView) v.findViewById(R.id.profile);
             image = (ImageView) v.findViewById(R.id.image);
-            heart = (AppCompatImageButton) v.findViewById(R.id.heart);
-            code = (AppCompatImageButton) v.findViewById(R.id.code);
-//            basket = (AppCompatImageButton) v.findViewById(R.id.basket);
+            heart = (ToggleButton) v.findViewById(R.id.heart);
+            code = (ToggleButton) v.findViewById(R.id.code);
+            basket = (ToggleButton) v.findViewById(R.id.basket);
             more = (AppCompatImageButton) v.findViewById(R.id.more);
 
             // Make profile picture black and white
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             profile.setColorFilter(new ColorMatrixColorFilter(matrix));
-
-            heart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    heart.setSelected(!heart.isSelected());
-                }
-            });
-
-            code.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    code.setSelected(!code.isSelected());
-                }
-            });
 
             // Popup menu for QAB overflow
             final PopupMenu menu = new PopupMenu(context, more);
@@ -64,13 +51,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     menu.show();
-                    menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            more.setSelected(!more.isSelected());
-                            return true;
-                        }
-                    });
                 }
             });
         }
