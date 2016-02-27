@@ -37,6 +37,10 @@ public class HomeFragment extends Fragment {
     }
 
     private List<Post> initPosts() {
+
+        // TODO: Gif loading in Android M in the recyclerview problem
+        // https://stackoverflow.com/questions/33363107/warning-using-glide-in-recyclerview
+
         List<Post> posts = new ArrayList<>();
 
         List<Post.Description> descriptions = new ArrayList<>();
@@ -47,6 +51,10 @@ public class HomeFragment extends Fragment {
         descriptions.add(new Post.Description(
                 "https://pbs.twimg.com/media/CcKdUFtWIAATHrg.jpg:small",
                 Post.Description.TYPE_IMAGE
+        ));
+        descriptions.add(new Post.Description(
+                "Hello world",
+                Post.Description.TYPE_PARAGRAPH
         ));
         posts.add(new Post(
                 "Mindy Kaling",

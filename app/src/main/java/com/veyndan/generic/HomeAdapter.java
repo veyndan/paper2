@@ -7,6 +7,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,16 +87,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.name.setText(post.getName());
         holder.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
 
-        TextView paragraph = (TextView) LayoutInflater.from(holder.description.getContext())
-                .inflate(R.layout.description_paragraph, holder.description, false);
-        holder.description.addView(paragraph);
-
-        ImageView image = (ImageView) LayoutInflater.from(holder.description.getContext())
-                .inflate(R.layout.description_image, holder.description, false);
-        holder.description.addView(image);
-
-        paragraph.setText(post.getDescriptions().get(0).getBody());
-        Glide.with(context).load(post.getDescriptions().get(1).getBody()).into(image);
+        for (Post.Description description : post.getDescriptions()) {
+            switch (description.getType()) {
+                case Post.Description.TYPE_PARAGRAPH:
+                    TextView paragraph = (TextView) LayoutInflater.from(holder.description.getContext())
+                            .inflate(R.layout.description_paragraph, holder.description, false);
+                    holder.description.addView(paragraph);
+                    paragraph.setText(description.getBody());
+                    break;
+                case Post.Description.TYPE_IMAGE:
+                    ImageView image = (ImageView) LayoutInflater.from(holder.description.getContext())
+                            .inflate(R.layout.description_image, holder.description, false);
+                    holder.description.addView(image);
+                    Glide.with(context).load(description.getBody()).into(image);
+                    break;
+                default:
+                    Log.e(TAG, String.format("Unknown description type: %d", description.getType()));
+            }
+        }
     }
 
     @Override
