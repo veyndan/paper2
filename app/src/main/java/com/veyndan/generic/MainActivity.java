@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
         }
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (HackyViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager()));
 
         // Give the TabLayout the ViewPager
