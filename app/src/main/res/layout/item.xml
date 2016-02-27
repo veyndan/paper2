@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/item"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -24,7 +25,6 @@
         android:layout_marginRight="16dp"
         android:layout_toEndOf="@id/profile"
         android:layout_toRightOf="@id/profile"
-        android:text="Mindy Kaling"
         android:textColor="@color/body_text_1"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />
@@ -63,8 +63,7 @@
         android:layout_below="@id/description"
         android:layout_margin="16dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/image" />
+        android:scaleType="fitXY" />
 
     <ToggleButton
         android:id="@+id/heart"

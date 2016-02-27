@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
 
     public static HomeFragment newInstance() {
@@ -27,10 +30,33 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
-        HomeAdapter adapter = new HomeAdapter(getContext(), new String[]{"Hello"});
+        HomeAdapter adapter = new HomeAdapter(getActivity(), initPosts());
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    private List<Post> initPosts() {
+        List<Post> posts = new ArrayList<>();
+
+        List<Post.Description> descriptions = new ArrayList<>();
+        descriptions.add(new Post.Description(
+                "Headed out on the road for a couple weeks with these two guys.",
+                Post.Description.TYPE_PARAGRAPH
+        ));
+        descriptions.add(new Post.Description(
+                "https://pbs.twimg.com/media/CcKdUFtWIAATHrg.jpg:small",
+                Post.Description.TYPE_IMAGE
+        ));
+        posts.add(new Post(
+                "Mindy Kaling",
+                "Yesterday",
+                "Public",
+                "40K",
+                R.drawable.profile,
+                descriptions
+        ));
+        return posts;
     }
 
 }

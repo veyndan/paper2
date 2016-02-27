@@ -1,6 +1,7 @@
 package com.veyndan.generic;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.widget.AppCompatImageButton;
@@ -10,16 +11,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+    @SuppressWarnings("unused")
+    private static final String TAG = LogUtils.makeLogTag(HomeAdapter.class);
     private final Context context;
-    private final String[] dataset;
+    private final List<Post> posts;
+    private final Resources res;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        @SuppressWarnings("unused")
         private static final String TAG = LogUtils.makeLogTag(ViewHolder.class);
 
+        final RelativeLayout item;
         final TextView name, about;
         final TextView description;
         final ImageView profile, image;
@@ -28,6 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         public ViewHolder(View v, Context context) {
             super(v);
+            item = (RelativeLayout) v.findViewById(R.id.item);
             name = (TextView) v.findViewById(R.id.name);
             about = (TextView) v.findViewById(R.id.about);
             description = (TextView) v.findViewById(R.id.description);
@@ -56,9 +68,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-    public HomeAdapter(Context context, String[] dataset) {
+    public HomeAdapter(Context context, List<Post> posts) {
         this.context = context;
-        this.dataset = dataset;
+        this.posts = posts;
+        res = context.getResources();
     }
 
     @Override
@@ -71,10 +84,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Post post = posts.get(position);
+        Glide.with(context).load(post.getProfile()).into(holder.profile);
+        holder.name.setText(post.getName());
+        holder.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
+
+        holder.description.setText(post.getDescriptions().get(0).getBody());
+        Glide.with(context).load(post.getDescriptions().get(1).getBody()).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return dataset.length;
+        return posts.size();
     }
 }
