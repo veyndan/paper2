@@ -15,8 +15,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/profile" />
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:id="@+id/name"
@@ -42,7 +41,6 @@
         android:layout_toEndOf="@id/profile"
         android:layout_toRightOf="@id/profile"
         android:gravity="bottom"
-        android:text="Yesterday &#8226; Public"
         android:textAllCaps="true"
         android:textColor="@color/body_text_disabled"
         android:textSize="@dimen/text_size_small" />

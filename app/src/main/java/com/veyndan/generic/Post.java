@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Post {
     private final String name, date, visibility, pins;
-    private final int profile;
+    private final String profile;
     private List<Description> descriptions;
 
-    public Post(String name, String date, String visiblity, String pins, int profile, List<Description> descriptions) {
+    public Post(String name, String date, String visiblity, String pins, String profile, List<Description> descriptions) {
         this.name = name;
         this.date = date;
         this.visibility = visiblity;
@@ -32,7 +32,7 @@ public class Post {
         return pins;
     }
 
-    public int getProfile() {
+    public String getProfile() {
         return profile;
     }
 

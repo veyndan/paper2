@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
                 "Yesterday",
                 "Public",
                 "40K",
-                R.drawable.profile,
+                "https://scontent-lhr3-1.xx.fbcdn.net/hphotos-xfp1/t31.0-8/333069_254128021295538_1439569292_o.jpg",
                 descriptions
         ));
         return posts;
