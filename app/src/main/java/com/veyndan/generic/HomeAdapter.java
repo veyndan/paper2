@@ -31,7 +31,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         @SuppressWarnings("unused")
         private static final String TAG = LogUtils.makeLogTag(ViewHolder.class);
 
-        final TextView name, about;
+        final TextView name, about, pins;
         final ImageView profile;
         final LinearLayout description;
         final ToggleButton heart, code, basket;
@@ -41,6 +41,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             super(v);
             name = (TextView) v.findViewById(R.id.name);
             about = (TextView) v.findViewById(R.id.about);
+            pins = (TextView) v.findViewById(R.id.pins);
             description = (LinearLayout) v.findViewById(R.id.description);
             profile = (ImageView) v.findViewById(R.id.profile);
             heart = (ToggleButton) v.findViewById(R.id.heart);
@@ -86,6 +87,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Glide.with(context).load(post.getProfile()).into(holder.profile);
         holder.name.setText(post.getName());
         holder.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
+
+        try {
+            int pinCount = Integer.parseInt(post.getPins());
+            holder.pins.setText(res.getQuantityString(R.plurals.pins, pinCount, pinCount));
+        } catch (NumberFormatException e) {
+            holder.pins.setText(res.getQuantityString(R.plurals.pins, -1, post.getPins()));
+        }
 
         for (Post.Description description : post.getDescriptions()) {
             switch (description.getType()) {

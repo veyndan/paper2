@@ -3,7 +3,10 @@ package com.veyndan.generic;
 import java.util.List;
 
 public class Post {
-    private final String name, date, visibility, pins;
+    private final String name;
+    private final String date;
+    private final String visibility;
+    private final String pins;
     private final String profile;
     private List<Description> descriptions;
 

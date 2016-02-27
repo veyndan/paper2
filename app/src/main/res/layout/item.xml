@@ -12,10 +12,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/name"
@@ -92,6 +92,7 @@
         app:srcCompat="@drawable/ic_more_horiz_24dp" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/pins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/heart"
@@ -102,7 +103,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="?selectableItemBackground"
-        android:text="40k Pins"
         android:textColor="@color/body_text_disabled" />
 
 </RelativeLayout>
