@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -44,9 +45,9 @@
         android:id="@+id/visibility"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-5dp"
-        android:layout_below="@id/name"
         android:layout_alignBaseline="@id/date"
+        android:layout_below="@id/name"
+        android:layout_marginLeft="-5dp"
         android:layout_toEndOf="@id/date"
         android:layout_toRightOf="@id/date" />
 
@@ -56,17 +57,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profile" />
 
-    <Button
-        android:id="@+id/pins"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/photo"
+        android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@id/description"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:background="?selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_camera_alt_24dp" />
+
+    <Button
+        android:id="@+id/pins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/photo"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/photo"
+        android:layout_below="@id/description"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="?selectableItemBackground"
         android:text="Post"
         android:textColor="@color/body_text_disabled" />

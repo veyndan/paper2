@@ -24,8 +24,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
@@ -33,7 +32,7 @@ public class HomeFragment extends Fragment {
         HomeAdapter adapter = new HomeAdapter(getActivity(), initPosts());
         recyclerView.setAdapter(adapter);
 
-        return view;
+        return recyclerView;
     }
 
     private List<Post> initPosts() {
@@ -62,10 +61,6 @@ public class HomeFragment extends Fragment {
         descriptions.add(new Post.Description(
                 "https://pbs.twimg.com/media/CcKdUFtWIAATHrg.jpg:small",
                 Post.Description.TYPE_IMAGE
-        ));
-        descriptions.add(new Post.Description(
-                "Hello world",
-                Post.Description.TYPE_PARAGRAPH
         ));
         posts.add(new Post(
                 "Mindy Kaling",

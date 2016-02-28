@@ -2,8 +2,6 @@ package com.veyndan.generic;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -130,10 +128,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
             name = (TextView) v.findViewById(R.id.name);
             profile = (ImageView) v.findViewById(R.id.profile);
 
-            // Make profile picture black and white
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            profile.setColorFilter(new ColorMatrixColorFilter(matrix));
+            UIUtils.grayscale(profile);
         }
     }
 
@@ -176,11 +171,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
             code = (ToggleButton) v.findViewById(R.id.code);
             basket = (ToggleButton) v.findViewById(R.id.basket);
             more = (AppCompatImageButton) v.findViewById(R.id.more);
-
-            // Make profile picture black and white
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.setSaturation(0);
-            profile.setColorFilter(new ColorMatrixColorFilter(matrix));
 
             // Popup menu for QAB overflow
             final PopupMenu menu = new PopupMenu(context, more);
