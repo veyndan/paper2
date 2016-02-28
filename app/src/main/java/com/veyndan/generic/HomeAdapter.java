@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -45,7 +47,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
             case TYPE_HEADER:
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.header, parent, false);
-                return new VHHeader(v);
+                return new VHHeader(v, context);
             case TYPE_ITEM:
                 v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item, parent, false);
@@ -62,7 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
             Post post = getPost(position);
             Glide.with(context).load(post.getProfile()).into(vhHeader.profile);
             vhHeader.name.setText(post.getName());
-            vhHeader.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
+            vhHeader.date.setText(context.getString(R.string.date, post.getDate()));
 
             EditText paragraph = (EditText) LayoutInflater.from(vhHeader.description.getContext())
                     .inflate(R.layout.description_paragraph_new, vhHeader.description, false);
@@ -119,14 +121,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder {
 
         final LinearLayout description;
-        final TextView name, about;
+        final TextView name;
         final ImageView profile;
 
         public VH(View v) {
             super(v);
             description = (LinearLayout) v.findViewById(R.id.description);
             name = (TextView) v.findViewById(R.id.name);
-            about = (TextView) v.findViewById(R.id.about);
             profile = (ImageView) v.findViewById(R.id.profile);
 
             // Make profile picture black and white
@@ -140,8 +141,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
         @SuppressWarnings("unused")
         private static final String TAG = LogUtils.makeLogTag(VHItem.class);
 
-        public VHHeader(View v) {
+        final TextView date;
+        final Spinner visibility;
+
+        public VHHeader(View v, Context context) {
             super(v);
+            date = (TextView) v.findViewById(R.id.date);
+            visibility = (Spinner) v.findViewById(R.id.visibility);
+
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                    R.array.visibility, R.layout.spinner_visibility);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            visibility.setAdapter(adapter);
+
         }
     }
 
@@ -149,6 +161,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
         @SuppressWarnings("unused")
         private static final String TAG = LogUtils.makeLogTag(VHItem.class);
 
+        final TextView about;
         final Button pins;
         final LinearLayout description;
         final ToggleButton heart, code, basket;
@@ -156,6 +169,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
 
         public VHItem(View v, Context context) {
             super(v);
+            about = (TextView) v.findViewById(R.id.about);
             pins = (Button) v.findViewById(R.id.pins);
             description = (LinearLayout) v.findViewById(R.id.description);
             heart = (ToggleButton) v.findViewById(R.id.heart);

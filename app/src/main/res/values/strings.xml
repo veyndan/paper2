@@ -3,8 +3,14 @@
     <string name="action_settings">Settings</string>
 
     <string name="about">%1$s &#8226; %2$s</string>
+    <string name="date">%1$s &#8226; </string>
     <plurals name="pins">
         <item quantity="one">%d Pin</item>
         <item quantity="other">%s Pins</item>
     </plurals>
+
+    <string-array name="visibility">
+        <item>Public</item>
+        <item>Private</item>
+    </string-array>
 </resources>

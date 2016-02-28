@@ -38,7 +38,6 @@
         android:layout_marginRight="16dp"
         android:layout_toEndOf="@id/profile"
         android:layout_toRightOf="@id/profile"
-        android:gravity="bottom"
         android:textAllCaps="true"
         android:textColor="@color/body_text_disabled"
         android:textSize="@dimen/text_size_small" />
