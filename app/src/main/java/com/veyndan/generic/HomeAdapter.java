@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,30 +22,142 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
     @SuppressWarnings("unused")
     private static final String TAG = LogUtils.makeLogTag(HomeAdapter.class);
+
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
+
     private final Context context;
     private final List<Post> posts;
     private final Resources res;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @SuppressWarnings("unused")
-        private static final String TAG = LogUtils.makeLogTag(ViewHolder.class);
+    public HomeAdapter(Context context, List<Post> posts) {
+        this.context = context;
+        this.posts = posts;
+        res = context.getResources();
+    }
 
-        final TextView name, about, pins;
+    @Override
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case TYPE_HEADER:
+                View v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.header, parent, false);
+                return new VHHeader(v);
+            case TYPE_ITEM:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item, parent, false);
+                return new VHItem(v, context);
+            default:
+                throw new IllegalStateException("No type that matches " + viewType);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(VH holder, int position) {
+        if (holder instanceof VHHeader) {
+            VHHeader vhHeader = (VHHeader) holder;
+            Post post = getPost(position);
+            Glide.with(context).load(post.getProfile()).into(vhHeader.profile);
+            vhHeader.name.setText(post.getName());
+            vhHeader.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
+
+            EditText paragraph = (EditText) LayoutInflater.from(vhHeader.description.getContext())
+                    .inflate(R.layout.description_paragraph_new, vhHeader.description, false);
+            vhHeader.description.addView(paragraph);
+        } else if (holder instanceof VHItem) {
+            VHItem vhItem = (VHItem) holder;
+            Post post = getPost(position);
+            Glide.with(context).load(post.getProfile()).into(vhItem.profile);
+            vhItem.name.setText(post.getName());
+            vhItem.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
+
+            try {
+                int pinCount = Integer.parseInt(post.getPins());
+                vhItem.pins.setText(res.getQuantityString(R.plurals.pins, pinCount, pinCount));
+            } catch (NumberFormatException e) {
+                vhItem.pins.setText(res.getQuantityString(R.plurals.pins, -1, post.getPins()));
+            }
+
+            for (Post.Description description : post.getDescriptions()) {
+                switch (description.getType()) {
+                    case Post.Description.TYPE_PARAGRAPH:
+                        TextView paragraph = (TextView) LayoutInflater.from(vhItem.description.getContext())
+                                .inflate(R.layout.description_paragraph, vhItem.description, false);
+                        vhItem.description.addView(paragraph);
+                        paragraph.setText(description.getBody());
+                        break;
+                    case Post.Description.TYPE_IMAGE:
+                        ImageView image = (ImageView) LayoutInflater.from(vhItem.description.getContext())
+                                .inflate(R.layout.description_image, vhItem.description, false);
+                        vhItem.description.addView(image);
+                        Glide.with(context).load(description.getBody()).into(image);
+                        break;
+                    default:
+                        Log.e(TAG, String.format("Unknown description type: %d", description.getType()));
+                }
+            }
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return posts.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? TYPE_HEADER : TYPE_ITEM;
+    }
+
+    private Post getPost(int position) {
+        return posts.get(position);
+    }
+
+    public static class VH extends RecyclerView.ViewHolder {
+
+        final LinearLayout description;
+        final TextView name, about;
         final ImageView profile;
+
+        public VH(View v) {
+            super(v);
+            description = (LinearLayout) v.findViewById(R.id.description);
+            name = (TextView) v.findViewById(R.id.name);
+            about = (TextView) v.findViewById(R.id.about);
+            profile = (ImageView) v.findViewById(R.id.profile);
+
+            // Make profile picture black and white
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            profile.setColorFilter(new ColorMatrixColorFilter(matrix));
+        }
+    }
+
+    public static class VHHeader extends VH {
+        @SuppressWarnings("unused")
+        private static final String TAG = LogUtils.makeLogTag(VHItem.class);
+
+        public VHHeader(View v) {
+            super(v);
+        }
+    }
+
+    public static class VHItem extends VH {
+        @SuppressWarnings("unused")
+        private static final String TAG = LogUtils.makeLogTag(VHItem.class);
+
+        final Button pins;
         final LinearLayout description;
         final ToggleButton heart, code, basket;
         final AppCompatImageButton more;
 
-        public ViewHolder(View v, Context context) {
+        public VHItem(View v, Context context) {
             super(v);
-            name = (TextView) v.findViewById(R.id.name);
-            about = (TextView) v.findViewById(R.id.about);
-            pins = (TextView) v.findViewById(R.id.pins);
+            pins = (Button) v.findViewById(R.id.pins);
             description = (LinearLayout) v.findViewById(R.id.description);
-            profile = (ImageView) v.findViewById(R.id.profile);
             heart = (ToggleButton) v.findViewById(R.id.heart);
             code = (ToggleButton) v.findViewById(R.id.code);
             basket = (ToggleButton) v.findViewById(R.id.basket);
@@ -65,58 +179,5 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 }
             });
         }
-    }
-
-    public HomeAdapter(Context context, List<Post> posts) {
-        this.context = context;
-        this.posts = posts;
-        res = context.getResources();
-    }
-
-    @Override
-    public HomeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item, parent, false);
-        return new ViewHolder(v, context);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Post post = posts.get(position);
-        Glide.with(context).load(post.getProfile()).into(holder.profile);
-        holder.name.setText(post.getName());
-        holder.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
-
-        try {
-            int pinCount = Integer.parseInt(post.getPins());
-            holder.pins.setText(res.getQuantityString(R.plurals.pins, pinCount, pinCount));
-        } catch (NumberFormatException e) {
-            holder.pins.setText(res.getQuantityString(R.plurals.pins, -1, post.getPins()));
-        }
-
-        for (Post.Description description : post.getDescriptions()) {
-            switch (description.getType()) {
-                case Post.Description.TYPE_PARAGRAPH:
-                    TextView paragraph = (TextView) LayoutInflater.from(holder.description.getContext())
-                            .inflate(R.layout.description_paragraph, holder.description, false);
-                    holder.description.addView(paragraph);
-                    paragraph.setText(description.getBody());
-                    break;
-                case Post.Description.TYPE_IMAGE:
-                    ImageView image = (ImageView) LayoutInflater.from(holder.description.getContext())
-                            .inflate(R.layout.description_image, holder.description, false);
-                    holder.description.addView(image);
-                    Glide.with(context).load(description.getBody()).into(image);
-                    break;
-                default:
-                    Log.e(TAG, String.format("Unknown description type: %d", description.getType()));
-            }
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return posts.size();
     }
 }
