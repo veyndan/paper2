@@ -3,12 +3,16 @@ package com.veyndan.generic;
 import java.util.List;
 
 public class Post {
-    private final String name;
-    private final String date;
-    private final String visibility;
-    private final String pins;
-    private final String profile;
+    private String name;
+    private String date;
+    private String visibility;
+    private String pins;
+    private String profile;
     private List<Description> descriptions;
+
+    public Post() {
+
+    }
 
     public Post(String name, String date, String visiblity, String pins, String profile, List<Description> descriptions) {
         this.name = name;
@@ -41,6 +45,18 @@ public class Post {
 
     public List<Description> getDescriptions() {
         return descriptions;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", visibility='" + visibility + '\'' +
+                ", pins='" + pins + '\'' +
+                ", profile='" + profile + '\'' +
+                ", descriptions=" + descriptions +
+                '}';
     }
 
     public static class Description {

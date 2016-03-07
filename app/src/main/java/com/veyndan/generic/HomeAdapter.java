@@ -59,17 +59,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
     public void onBindViewHolder(VH holder, int position) {
         if (holder instanceof VHHeader) {
             VHHeader vhHeader = (VHHeader) holder;
-            Post post = getPost(position);
-            Glide.with(context).load(post.getProfile()).into(vhHeader.profile);
-            vhHeader.name.setText(post.getName());
-            vhHeader.date.setText(context.getString(R.string.date, post.getDate()));
+            Glide.with(context).load("https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9").into(vhHeader.profile);
+            vhHeader.name.setText("Veyndan Stuart");
+            vhHeader.date.setText(context.getString(R.string.date, "Now"));
 
             EditText paragraph = (EditText) LayoutInflater.from(vhHeader.description.getContext())
                     .inflate(R.layout.description_paragraph_new, vhHeader.description, false);
             vhHeader.description.addView(paragraph);
         } else if (holder instanceof VHItem) {
             VHItem vhItem = (VHItem) holder;
-            Post post = getPost(position);
+            Post post = getPost(position - 1);
             Glide.with(context).load(post.getProfile()).into(vhItem.profile);
             vhItem.name.setText(post.getName());
             vhItem.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
@@ -104,7 +103,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return posts.size() + 1;
     }
 
     @Override

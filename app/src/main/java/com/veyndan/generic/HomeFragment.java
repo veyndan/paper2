@@ -42,16 +42,6 @@ public class HomeFragment extends Fragment {
 
         List<Post> posts = new ArrayList<>();
 
-        // Header
-        posts.add(new Post(
-                "Veyndan Stuart",
-                "Now",
-                "Public",
-                null,
-                "https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9",
-                null
-        ));
-
         // Items
         List<Post.Description> descriptions = new ArrayList<>();
         descriptions.add(new Post.Description(
