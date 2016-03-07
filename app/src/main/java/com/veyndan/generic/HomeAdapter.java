@@ -75,8 +75,6 @@ public class HomeAdapter extends RecyclerHeader<HomeAdapter.VH> {
         });
     }
 
-    //
-
     @Override
     protected VH onCreateHeaderItemViewHolder(ViewGroup parent) {
         View v = LayoutInflater.from(parent.getContext())
@@ -126,7 +124,7 @@ public class HomeAdapter extends RecyclerHeader<HomeAdapter.VH> {
                         vhHeader.name.getText().toString(),
                         "Now",
                         vhHeader.visibility.getSelectedItem().toString(),
-                        res.getQuantityString(R.plurals.pins, 0, 0),
+                        "0",
                         "https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9",
                         descriptions
                 ));
