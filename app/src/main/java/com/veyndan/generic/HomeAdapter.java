@@ -23,20 +23,16 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.veyndan.generic.ui.RecyclerHeader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
+public class HomeAdapter extends RecyclerHeader<HomeAdapter.VH> {
     @SuppressWarnings("unused")
     private static final String TAG = LogUtils.makeLogTag(HomeAdapter.class);
-    
+
     private Firebase ref;
-
-    boolean firstPass = false;
-
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
 
     private final Context context;
     private final List<Post> posts;
@@ -53,9 +49,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
                 HomeAdapter.this.posts.add(0, snapshot.getValue(Post.class));
-                for (Post post : posts) {
-                    Log.d(TAG, post.getDescriptions().toString());
-                }
                 notifyDataSetChanged();
             }
 
@@ -76,115 +69,106 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
             }
 
             @Override
-            public void onCancelled(FirebaseError error) {
+            public void onCancelled(FirebaseError firebaseError) {
 
             }
         });
     }
 
+    //
+
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case TYPE_HEADER:
-                View v = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.header, parent, false);
-                return new VHHeader(v, context);
-            case TYPE_ITEM:
-                v = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item, parent, false);
-                return new VHItem(v, context);
-            default:
-                throw new IllegalStateException("No type that matches " + viewType);
-        }
+    protected VH onCreateHeaderItemViewHolder(ViewGroup parent) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.header, parent, false);
+        return new VHHeader(v, context);
     }
 
     @Override
-    public void onBindViewHolder(final VH holder, int position) {
-        if (holder instanceof VHHeader) {
-            if (firstPass) return;
-            firstPass = true;
-            final VHHeader vhHeader = (VHHeader) holder;
-            Glide.with(context).load("https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9").into(vhHeader.profile);
-            vhHeader.name.setText("Veyndan Stuart");
-            vhHeader.date.setText(context.getString(R.string.date, "Now"));
+    protected VH onCreateContentItemViewHolder(ViewGroup parent) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item, parent, false);
+        return new VHItem(v, context);
+    }
 
-            vhHeader.description.removeAllViews();
-            EditText paragraph = (EditText) LayoutInflater.from(vhHeader.description.getContext())
-                    .inflate(R.layout.description_paragraph_new, vhHeader.description, false);
-            vhHeader.description.addView(paragraph);
+    @Override
+    protected int getContentItemCount() {
+        return posts.size();
+    }
 
-            vhHeader.post.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick");
-                    List<Post.Description> descriptions = new ArrayList<>();
-                    for (int i = 0; i < vhHeader.description.getChildCount(); i++) {
-                        View child = vhHeader.description.getChildAt(i);
-                        if (child instanceof EditText) {
-                            descriptions.add(new Post.Description(
-                                    ((EditText) child).getText().toString(),
-                                    Post.Description.TYPE_PARAGRAPH
-                            ));
-                        }
+    @Override
+    protected void onBindHeaderItemViewHolder(VH holder, int position) {
+        final VHHeader vhHeader = (VHHeader) holder;
+        Glide.with(context).load("https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9").into(vhHeader.profile);
+        vhHeader.name.setText("Veyndan Stuart");
+        vhHeader.date.setText(context.getString(R.string.date, "Now"));
+
+        vhHeader.description.removeAllViewsInLayout();
+
+        EditText paragraph = (EditText) LayoutInflater.from(vhHeader.description.getContext())
+                .inflate(R.layout.description_paragraph_new, vhHeader.description, false);
+        vhHeader.description.addView(paragraph);
+
+        vhHeader.post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Post.Description> descriptions = new ArrayList<>();
+                for (int i = 0; i < vhHeader.description.getChildCount(); i++) {
+                    View child = vhHeader.description.getChildAt(i);
+                    if (child instanceof EditText) {
+                        descriptions.add(new Post.Description(
+                                ((EditText) child).getText().toString(),
+                                Post.Description.TYPE_PARAGRAPH
+                        ));
                     }
-                    ref.push().setValue(new Post(
-                            vhHeader.name.getText().toString(),
-                            "Now",
-                            vhHeader.visibility.getSelectedItem().toString(),
-                            res.getQuantityString(R.plurals.pins, 0, 0),
-                            "https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9",
-                            descriptions
-                    ));
                 }
-            });
-        } else if (holder instanceof VHItem) {
-            VHItem vhItem = (VHItem) holder;
-            Post post = getPost(position - 1);
-            if (post == null) return;
-            Glide.with(context).load(post.getProfile()).into(vhItem.profile);
-            vhItem.name.setText(post.getName());
-            vhItem.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
-
-            try {
-                int pinCount = Integer.parseInt(post.getPins());
-                vhItem.pins.setText(res.getQuantityString(R.plurals.pins, pinCount, pinCount));
-            } catch (NumberFormatException e) {
-                vhItem.pins.setText(res.getQuantityString(R.plurals.pins, -1, post.getPins()));
+                ref.push().setValue(new Post(
+                        vhHeader.name.getText().toString(),
+                        "Now",
+                        vhHeader.visibility.getSelectedItem().toString(),
+                        res.getQuantityString(R.plurals.pins, 0, 0),
+                        "https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9",
+                        descriptions
+                ));
             }
+        });
+    }
 
-            for (Post.Description description : post.getDescriptions()) {
-                switch (description.getType()) {
-                    case Post.Description.TYPE_PARAGRAPH:
-                        TextView paragraph = (TextView) LayoutInflater.from(vhItem.description.getContext())
-                                .inflate(R.layout.description_paragraph, vhItem.description, false);
-                        vhItem.description.addView(paragraph);
-                        paragraph.setText(description.getBody());
-                        break;
-                    case Post.Description.TYPE_IMAGE:
-                        ImageView image = (ImageView) LayoutInflater.from(vhItem.description.getContext())
-                                .inflate(R.layout.description_image, vhItem.description, false);
-                        vhItem.description.addView(image);
-                        Glide.with(context).load(description.getBody()).into(image);
-                        break;
-                    default:
-                        Log.e(TAG, String.format("Unknown description type: %d", description.getType()));
-                }
+    @Override
+    protected void onBindContentItemViewHolder(VH holder, int position) {
+        VHItem vhItem = (VHItem) holder;
+        Post post = posts.get(position);
+        Glide.with(context).load(post.getProfile()).into(vhItem.profile);
+        vhItem.name.setText(post.getName());
+        vhItem.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
+
+        try {
+            int pinCount = Integer.parseInt(post.getPins());
+            vhItem.pins.setText(res.getQuantityString(R.plurals.pins, pinCount, pinCount));
+        } catch (NumberFormatException e) {
+            vhItem.pins.setText(res.getQuantityString(R.plurals.pins, -1, post.getPins()));
+        }
+
+        for (Post.Description description : post.getDescriptions()) {
+            switch (description.getType()) {
+                case Post.Description.TYPE_PARAGRAPH:
+                    TextView paragraph = (TextView) LayoutInflater.from(vhItem.description.getContext())
+                            .inflate(R.layout.description_paragraph, vhItem.description, false);
+                    vhItem.description.removeAllViewsInLayout();
+                    vhItem.description.addView(paragraph);
+                    paragraph.setText(description.getBody());
+                    break;
+                case Post.Description.TYPE_IMAGE:
+                    ImageView image = (ImageView) LayoutInflater.from(vhItem.description.getContext())
+                            .inflate(R.layout.description_image, vhItem.description, false);
+                    vhItem.description.removeAllViewsInLayout();
+                    vhItem.description.addView(image);
+                    Glide.with(context).load(description.getBody()).into(image);
+                    break;
+                default:
+                    Log.e(TAG, String.format("Unknown description type: %d", description.getType()));
             }
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return posts.size() + 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : TYPE_ITEM;
-    }
-
-    private Post getPost(int position) {
-        return posts.get(position);
     }
 
     public static class VH extends RecyclerView.ViewHolder {

@@ -11,7 +11,7 @@ public class Post {
     private List<Description> descriptions;
 
     public Post() {
-
+        // empty default constructor, necessary for Firebase to be able to deserialize blog posts
     }
 
     public Post(String name, String date, String visiblity, String pins, String profile, List<Description> descriptions) {
@@ -95,7 +95,7 @@ public class Post {
         private int type;
 
         public Description() {
-
+            // empty default constructor, necessary for Firebase to be able to deserialize blog posts
         }
 
         public Description(String body, int type) {
