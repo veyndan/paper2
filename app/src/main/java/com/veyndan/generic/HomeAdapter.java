@@ -19,12 +19,21 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
     @SuppressWarnings("unused")
     private static final String TAG = LogUtils.makeLogTag(HomeAdapter.class);
+    
+    private Firebase ref;
+
+    boolean firstPass = false;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -33,10 +42,44 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
     private final List<Post> posts;
     private final Resources res;
 
-    public HomeAdapter(Context context, List<Post> posts) {
+    public HomeAdapter(Context context) {
         this.context = context;
-        this.posts = posts;
+        this.posts = new ArrayList<>();
         res = context.getResources();
+
+        ref = new Firebase("https://sweltering-heat-8337.firebaseio.com/users");
+
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
+                HomeAdapter.this.posts.add(0, snapshot.getValue(Post.class));
+                for (Post post : posts) {
+                    Log.d(TAG, post.getDescriptions().toString());
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {
+                HomeAdapter.this.posts.remove(snapshot.getValue(Post.class));
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -56,19 +99,48 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(final VH holder, int position) {
         if (holder instanceof VHHeader) {
-            VHHeader vhHeader = (VHHeader) holder;
+            if (firstPass) return;
+            firstPass = true;
+            final VHHeader vhHeader = (VHHeader) holder;
             Glide.with(context).load("https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9").into(vhHeader.profile);
             vhHeader.name.setText("Veyndan Stuart");
             vhHeader.date.setText(context.getString(R.string.date, "Now"));
 
+            vhHeader.description.removeAllViews();
             EditText paragraph = (EditText) LayoutInflater.from(vhHeader.description.getContext())
                     .inflate(R.layout.description_paragraph_new, vhHeader.description, false);
             vhHeader.description.addView(paragraph);
+
+            vhHeader.post.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick");
+                    List<Post.Description> descriptions = new ArrayList<>();
+                    for (int i = 0; i < vhHeader.description.getChildCount(); i++) {
+                        View child = vhHeader.description.getChildAt(i);
+                        if (child instanceof EditText) {
+                            descriptions.add(new Post.Description(
+                                    ((EditText) child).getText().toString(),
+                                    Post.Description.TYPE_PARAGRAPH
+                            ));
+                        }
+                    }
+                    ref.push().setValue(new Post(
+                            vhHeader.name.getText().toString(),
+                            "Now",
+                            vhHeader.visibility.getSelectedItem().toString(),
+                            res.getQuantityString(R.plurals.pins, 0, 0),
+                            "https://scontent-lhr3-1.xx.fbcdn.net/hphotos-frc3/v/t1.0-9/1098101_1387041911520027_1668446817_n.jpg?oh=85cb27b32003fb5080e73e18d03bbbc4&oe=574FB4F9",
+                            descriptions
+                    ));
+                }
+            });
         } else if (holder instanceof VHItem) {
             VHItem vhItem = (VHItem) holder;
             Post post = getPost(position - 1);
+            if (post == null) return;
             Glide.with(context).load(post.getProfile()).into(vhItem.profile);
             vhItem.name.setText(post.getName());
             vhItem.about.setText(context.getString(R.string.about, post.getDate(), post.getVisibility()));
@@ -136,11 +208,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.VH> {
         private static final String TAG = LogUtils.makeLogTag(VHItem.class);
 
         final TextView date;
+        final Button post;
         final Spinner visibility;
 
         public VHHeader(View v, Context context) {
             super(v);
             date = (TextView) v.findViewById(R.id.date);
+            post = (Button) v.findViewById(R.id.post);
             visibility = (Spinner) v.findViewById(R.id.visibility);
 
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,

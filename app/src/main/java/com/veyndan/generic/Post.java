@@ -59,12 +59,44 @@ public class Post {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Post post = (Post) o;
+
+        if (name != null ? !name.equals(post.name) : post.name != null) return false;
+        if (date != null ? !date.equals(post.date) : post.date != null) return false;
+        if (visibility != null ? !visibility.equals(post.visibility) : post.visibility != null)
+            return false;
+        if (pins != null ? !pins.equals(post.pins) : post.pins != null) return false;
+        if (profile != null ? !profile.equals(post.profile) : post.profile != null) return false;
+        return descriptions != null ? descriptions.equals(post.descriptions) : post.descriptions == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
+        result = 31 * result + (pins != null ? pins.hashCode() : 0);
+        result = 31 * result + (profile != null ? profile.hashCode() : 0);
+        result = 31 * result + (descriptions != null ? descriptions.hashCode() : 0);
+        return result;
+    }
+
     public static class Description {
         public static final int TYPE_PARAGRAPH = 0;
         public static final int TYPE_IMAGE = 1;
 
         private String body;
         private int type;
+
+        public Description() {
+
+        }
 
         public Description(String body, int type) {
             this.body = body;
@@ -77,6 +109,25 @@ public class Post {
 
         public int getType() {
             return type;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Description that = (Description) o;
+
+            if (type != that.type) return false;
+            return body != null ? body.equals(that.body) : that.body == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = body != null ? body.hashCode() : 0;
+            result = 31 * result + type;
+            return result;
         }
     }
 }

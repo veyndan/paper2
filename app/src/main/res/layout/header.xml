@@ -70,7 +70,7 @@
         app:srcCompat="@drawable/ic_camera_alt_24dp" />
 
     <Button
-        android:id="@+id/pins"
+        android:id="@+id/post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/photo"
